@@ -9,28 +9,121 @@
   </head>
   <body>
     <main class="content">
-      <div class="box start">
-        <div class="box-content">
-          <h1 class="heading">
-            Нахождение локального минимума функции от 2-х переменных
-          </h1>
-          <div>
-            <p class="main-text">Введите функцию:</p>
-            <div class="input-data">
-              <input
-                type="text"
-                id="function"
-                required
-                value="2*x1^2+x1*x2+x2^2" />
-              <div class="underline"></div>
-              <label class="main-text">f(x) = </label>
+      <div class="box-content">
+        <h1 class="heading">
+          Нахождение локального минимума функции от 2-х переменных
+        </h1>
+        <div>
+          <div class="box first-box">
+            <div class="box-header">
+              <p class="box-number">1.</p>
+              <h2 class="heading">
+                Метод градиентного спуска с постоянным шагом
+              </h2>
+            </div>
+            <div class="box start">
+              <p class="main-text">Введите функцию:</p>
+              <div class="input-data">
+                <input
+                  type="text"
+                  id="function"
+                  required
+                  value="2*x1^2+x1*x2+x2^2" />
+                <div class="underline"></div>
+                <label class="main-text">f(x) = </label>
+              </div>
+              <p class="main-text">Исходные данные:</p>
+              <div class="initial-values">
+                <div class="input-data initial-value">
+                  <input
+                    type="text"
+                    class="init"
+                    id="x01"
+                    required
+                    value="0.5" />
+                  <div class="underline"></div>
+                  <label class="main-text">x<sup>0</sup><sub>1</sub> = </label>
+                </div>
+
+                <div class="input-data initial-value">
+                  <input type="text" class="init" id="x02" required value="1" />
+                  <div class="underline"></div>
+                  <label class="main-text">x<sup>0</sup><sub>2</sub> = </label>
+                </div>
+
+                <div class="input-data initial-value">
+                  <input
+                    type="text"
+                    class="init"
+                    id="e1"
+                    required
+                    value="0.1" />
+                  <div class="underline"></div>
+                  <label class="main-text">ε<sub>1</sub> = </label>
+                </div>
+
+                <div class="input-data initial-value">
+                  <input
+                    type="text"
+                    class="init"
+                    id="e2"
+                    required
+                    value="0.15" />
+                  <div class="underline"></div>
+                  <label class="main-text">ε<sub>2</sub> = </label>
+                </div>
+
+                <div class="input-data initial-value">
+                  <input type="text" class="init" id="M" required value="10" />
+                  <div class="underline"></div>
+                  <label class="main-text">M = </label>
+                </div>
+
+                <div class="input-data initial-value">
+                  <input
+                    type="text"
+                    class="init"
+                    id="t0"
+                    required
+                    value="0.5" />
+                  <div class="underline"></div>
+                  <label class="main-text">t<sub>0</sub> = </label>
+                </div>
+              </div>
+            </div>
+            <div class="buttons">
+              <button class="button appearance-animation solve-button">
+                Рассчитать
+              </button>
             </div>
           </div>
-          <div>
+          <div class="solution-box">
+            <div class="box-content solution-content">
+              <h3 class="main-text answer"></h3>
+              <details class="more">
+                <summary class="main-text more">Подробнее</summary>
+                <p class="main-text solution"></p>
+              </details>
+            </div>
+          </div>
+        </div>
+        <div class="box second-box">
+          <div class="box-header">
+            <p class="box-number">2.</p>
+            <h2 class="heading">Метод наискорейшего градиентного спуска</h2>
+          </div>
+          <div class="box start">
+            <p class="main-text">Заданная функция:</p>
+              <p class="main-text">f(x) = 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
             <p class="main-text">Исходные данные:</p>
             <div class="initial-values">
               <div class="input-data initial-value">
-                <input type="text" class="init" id="x01" required value="0.5" />
+                <input
+                  type="text"
+                  class="init"
+                  id="x01"
+                  required
+                  value="0.5" />
                 <div class="underline"></div>
                 <label class="main-text">x<sup>0</sup><sub>1</sub> = </label>
               </div>
@@ -42,13 +135,23 @@
               </div>
 
               <div class="input-data initial-value">
-                <input type="text" class="init" id="e1" required value="0.1" />
+                <input
+                  type="text"
+                  class="init"
+                  id="e1"
+                  required
+                  value="0.1" />
                 <div class="underline"></div>
                 <label class="main-text">ε<sub>1</sub> = </label>
               </div>
 
               <div class="input-data initial-value">
-                <input type="text" class="init" id="e2" required value="0.15" />
+                <input
+                  type="text"
+                  class="init"
+                  id="e2"
+                  required
+                  value="0.15" />
                 <div class="underline"></div>
                 <label class="main-text">ε<sub>2</sub> = </label>
               </div>
@@ -60,28 +163,25 @@
               </div>
 
               <div class="input-data initial-value">
-                <input type="text" class="init" id="t0" required value="0.5" />
+                <input
+                  type="text"
+                  class="init"
+                  id="t0"
+                  required
+                  value="0.5" />
                 <div class="underline"></div>
                 <label class="main-text">t<sub>0</sub> = </label>
               </div>
             </div>
           </div>
           <div class="buttons">
-            <button class="button appearance-animation" id="first-button">
+            <button class="button appearance-animation solve-button">
               Рассчитать
             </button>
           </div>
         </div>
-      </div>
-      <div class="solution-box" id="solution-box">
-        <div class="box first-box">
-          <div class="box-header">
-            <p class="box-number">1.</p>
-            <h2 class="heading">
-              Метод градиентного спуска с постоянным шагом
-            </h2>
-          </div>
-          <div class="box-content first-solution">
+        <div class="solution-box">
+          <div class="box-content solution-content">
             <h3 class="main-text answer"></h3>
             <details class="more">
               <summary class="main-text more">Подробнее</summary>
@@ -89,22 +189,177 @@
             </details>
           </div>
         </div>
-        <div class="box second-box">
-          <div class="box-header">
-            <p class="box-number">2.</p>
-            <h2 class="heading">Метод наискорейшего градиентного спуска</h2>
-          </div>
         </div>
         <div class="box third-box">
           <div class="box-header">
             <p class="box-number">3.</p>
             <h2 class="heading">Метод Ньютона</h2>
           </div>
+          <div class="box start">
+            <p class="main-text">Введите функцию:</p>
+            <div class="input-data">
+              <input
+                type="text"
+                id="function"
+                required
+                value="2*x1^2+x1*x2+x2^2" />
+              <div class="underline"></div>
+              <label class="main-text">f(x) = </label>
+            </div>
+            <p class="main-text">Исходные данные:</p>
+            <div class="initial-values">
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="x01"
+                  required
+                  value="0.5" />
+                <div class="underline"></div>
+                <label class="main-text">x<sup>0</sup><sub>1</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input type="text" class="init" id="x02" required value="1" />
+                <div class="underline"></div>
+                <label class="main-text">x<sup>0</sup><sub>2</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="e1"
+                  required
+                  value="0.1" />
+                <div class="underline"></div>
+                <label class="main-text">ε<sub>1</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="e2"
+                  required
+                  value="0.15" />
+                <div class="underline"></div>
+                <label class="main-text">ε<sub>2</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input type="text" class="init" id="M" required value="10" />
+                <div class="underline"></div>
+                <label class="main-text">M = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="t0"
+                  required
+                  value="0.5" />
+                <div class="underline"></div>
+                <label class="main-text">t<sub>0</sub> = </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button class="button appearance-animation solve-button">
+                Рассчитать
+              </button>
+            </div>
+          </div>
+          <div class="solution-box">
+            <div class="box-content solution-content">
+              <h3 class="main-text answer"></h3>
+              <details class="more">
+                <summary class="main-text more">Подробнее</summary>
+                <p class="main-text solution"></p>
+              </details>
+            </div>
+          </div>
         </div>
         <div class="box fourth-box">
           <div class="box-header">
             <p class="box-number">4.</p>
             <h2 class="heading">Метод Ньютона-Рафсона</h2>
+          </div>
+          <div class="box start">
+            <p class="main-text">Заданная функция:</p>
+              <p class="main-text">f(x) = 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
+            <p class="main-text">Исходные данные:</p>
+            <div class="initial-values">
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="x01"
+                  required
+                  value="0.5" />
+                <div class="underline"></div>
+                <label class="main-text">x<sup>0</sup><sub>1</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input type="text" class="init" id="x02" required value="1" />
+                <div class="underline"></div>
+                <label class="main-text">x<sup>0</sup><sub>2</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="e1"
+                  required
+                  value="0.1" />
+                <div class="underline"></div>
+                <label class="main-text">ε<sub>1</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="e2"
+                  required
+                  value="0.15" />
+                <div class="underline"></div>
+                <label class="main-text">ε<sub>2</sub> = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input type="text" class="init" id="M" required value="10" />
+                <div class="underline"></div>
+                <label class="main-text">M = </label>
+              </div>
+
+              <div class="input-data initial-value">
+                <input
+                  type="text"
+                  class="init"
+                  id="t0"
+                  required
+                  value="0.5" />
+                <div class="underline"></div>
+                <label class="main-text">t<sub>0</sub> = </label>
+              </div>
+            </div>
+            <div class="buttons">
+              <button class="button appearance-animation solve-button">
+                Рассчитать
+              </button>
+            </div>
+          </div>
+          <div class="solution-box">
+            <div class="box-content solution-content">
+              <h3 class="main-text answer"></h3>
+              <details class="more">
+                <summary class="main-text more">Подробнее</summary>
+                <p class="main-text solution"></p>
+              </details>
+            </div>
           </div>
         </div>
       </div>
