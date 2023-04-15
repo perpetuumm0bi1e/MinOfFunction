@@ -12,6 +12,10 @@ for (let elm of elements) {
     observer.observe(elm);
 }
 
+let solutionBox = document.getElementById('solution-box'),
+    solutions = document.getElementsByClassName('solution'),
+    answers = document.getElementsByClassName('answer');
+
 let functionInput = document.getElementById('function'),
     initials = document.getElementsByClassName('init');
 
@@ -28,6 +32,8 @@ class Element {
 }
 
 firstButton.addEventListener('click', function() {
+    solutions[0].innerHTML = '';
+    answers[0].innerHTML = '';
     let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let arr = functionInput.value.split('');
     let func = [];
@@ -42,11 +48,10 @@ firstButton.addEventListener('click', function() {
     for (let j = 0; j < arr.length; j++) {
         if (arr[j] == '-' && index == 1 && base1 == '' && exp1 == 1 && base2 == '' && exp2 == 1) { 
             index *= -1;
-        } else if (arr[j] == 'a' || arr[j] == 'b') { 
-            (base1 == '') ? base1 = arr[j]: base2 = arr[j];
+        } else if (arr[j] == 'x') { 
+            (arr[j + 1] == '1') ? base1 = (arr[j] + arr[j + 1]) : base2 = (arr[j] + arr[j + 1]);
+            j++;
         } else if ((arr[j] == '+' || arr[j] == '-') && (base1 != '' || base2 != '' || index != 1)) { 
-            let base, exp;
-            ((base1 == 'b' && base2 == 'a') || (base1 == 'b' && base2 == '')) ? (base = base1, exp = exp1, base1 = base2, exp1 = exp2, base2 = base, exp2 = exp) : ntn++;
                 func[i] = new Element(index, base1, exp1, base2, exp2);
                 (arr[j] == '-') ? index = -1: index = 1;
                 base1 = '';
@@ -58,8 +63,8 @@ firstButton.addEventListener('click', function() {
             (base2 != '' && exp2 == 1) ? exp2 = Number(arr[j + 1]): exp1 = Number(arr[j + 1]);
             j++;
         } else if (arr[j] == '*') {
-            (base2 == '') ? base2 = arr[j + 1] : base1 = arr[j + 1];
-            j++;
+            (base1 == '') ? base1 = (arr[j + 1] + arr[j + 2]) : ((base2 == '') ? base2 = (arr[j + 1] + arr[j + 2]) : ntn);
+            j+=2;
         } else {
             for (let k = 0; k < numbers.length; k++) {
                 if (arr[j] == numbers[k]) {
@@ -68,8 +73,6 @@ firstButton.addEventListener('click', function() {
                 }
             }
         }
-        let base, exp;
-        ((base1 == 'b' && base2 == 'a') || (base1 == 'b' && base2 == '')) ? (base = base1, exp = exp1, base1 = base2, exp1 = exp2, base2 = base, exp2 = exp) : ntn++;
         (j == arr.length - 1) ?
         (func[i] = new Element(index, base1, exp1, base2, exp2), index = 1, base1 = '', exp1 = 1, base2 = '', exp2 = 1) : ntn++;
     }
@@ -85,30 +88,30 @@ firstButton.addEventListener('click', function() {
 
     let solution = false;
     let k = 0, t = t0;
+    // метод градиентного спуска с постоянным шагом
     while(!solution) {
         let gradientV = gradValue(gradient, x[k]); // шаг 2
         let normV = normValue(gradientV);
-
-        console.log('Градиент в точке:' + gradientV); 
-        console.log('Норма в точке:' + normV);
-        console.log('Значение функции в точке:' + funcValue(func, x[k]));
-        
+        solutions[0].innerHTML += `<br><b>k = ${k}</b> <br><br> 
+                                  ∇f(x<sup>k</sup>) = (${gradientV[0]}; ${gradientV[1]})<sup>T</sup> <br>
+                                  || ∇f(x<sup>k</sup>) || = ${normV} <br>
+                                  f(x<sup>k</sup>) = ${funcValue(func, x[k])} <br>`;
         if(normV < E1){ // шаг 3
             console.log('Решение: { x* = (' + x[k][0] + ', ' + x[k][1] + '); f(x*) = ' + funcValue(func, x[k]) + ' }');
+            answers[0].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
             solution = true;
             break;
         } else {
             while(true) {
                 x[k + 1] = nextX(x[k], t, gradient); // шаг 5: вычисление xk
-
-                console.log('x^k+1:' + x[k + 1]);
-                console.log('f(x^k+1) - f(x^k) = ' + (funcValue(func, x[k + 1]) - funcValue(func, x[k])));
-
+                solutions[0].innerHTML += `x<sup>k+1</sup> = (${x[k + 1][0]}; ${x[k + 1][1]})<sup>T</sup> <br>
+                                          f(x<sup>k+1</sup>) - f(x<sup>k</sup>) = ${funcValue(func, x[k + 1]) - funcValue(func, x[k])} <br>`;
                 if((funcValue(func, x[k + 1]) - funcValue(func, x[k])) < 0){ // шаг 6
-                    console.log('f(x^k+1) - f(x^k) = ' + (funcValue(func, x[k + 1]) - funcValue(func, x[k])));
                     let newX = [x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]];
                     if(normValue(newX) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k + 1])) < E1){ // шаг 7
                         console.log('Решение: { x* = (' + x[k][0] + ', ' + x[k][1] + '); f(x*) = ' + funcValue(func, x[k]) + ' }');
+                        solutionBox.style.visibility = 'visible';
+                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
                         solution = true;
                         break;
                     } else {
@@ -121,19 +124,15 @@ firstButton.addEventListener('click', function() {
             }
         }
     }
-
-    
 });
 // вычисление x^k+1
 let nextX = function(xk, tk, grad){
     let x = [];
     let gradV = gradValue(grad, xk);
-    console.log('gradV: ' + gradV);
     for(let i = 0; i < grad.length; i++){
         x[i] = xk[i] - tk * gradV[i];
     }
     return x;
-
 }
 // значение функции в точке
 let funcValue = function(func, x){
@@ -207,28 +206,4 @@ let grad = function(func) {
         }
     }
     return [gradA, gradB];
-    /*
-    function gradStringer(gradArr){
-        let gradString = ''
-        for(let i = 0; i < gradArr.length; i++){
-            let ind, ntn;
-            (i == 0) ? ind = gradArr[i].index : ntn++;
-            (gradArr[i].index > 0 && gradArr[i].index != 1 && i != 0) ? ind = '+' + gradArr[i].index : ntn++;
-            (gradArr[i].index > 0 && gradArr[i].index == 1) ? ind = '+' : ntn++;
-            (gradArr[i].index < 0 || gradArr[i].index == 0) ? ind = gradArr[i].index : ntn++;
-            (gradArr[i].index == -1) ? ind = '-' : ntn++;
-            let gradStringEl = ind;
-            (gradArr[i].base1 != '') ? gradStringEl += gradArr[i].base1 : ntn++;
-            (gradArr[i].exp1 != 0 && gradArr[i].exp1 != 1) ? gradStringEl += ('^' + gradArr[i].exp1) : ntn++;
-            (gradArr[i].base2 != '') ? gradStringEl += gradArr[i].base2 : ntn++;
-            (gradArr[i].exp2 != 0 && gradArr[i].exp2 != 1) ? gradStringEl += ('^' + gradArr[i].exp2) : ntn++;
-            (gradStringEl == 0) ? gradStringEl = '+0' : ntn++;
-            gradString += gradStringEl;
-        }
-        return gradString;
-    }
-    let gradAString = gradStringer(gradA), gradBString = gradStringer(gradB);
-    //console.log('gradA:' + '\n' + gradAString + '\n' + 'gradB:' + '\n' + gradBString);
-    let finalGradient = [gradAString, gradBString];
-    */
 }

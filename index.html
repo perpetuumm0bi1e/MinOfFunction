@@ -17,7 +17,11 @@
           <div>
             <p class="main-text">Введите функцию:</p>
             <div class="input-data">
-              <input type="text" id="function" required value="2a^2+a*b+b^2" />
+              <input
+                type="text"
+                id="function"
+                required
+                value="2*x1^2+x1*x2+x2^2" />
               <div class="underline"></div>
               <label class="main-text">f(x) = </label>
             </div>
@@ -69,28 +73,39 @@
           </div>
         </div>
       </div>
-      <div class="box first-box">
-        <div class="box-header">
-          <p class="box-number">1.</p>
-          <h2 class="heading">Метод градиентного спуска с постоянным шагом</h2>
+      <div class="solution-box" id="solution-box">
+        <div class="box first-box">
+          <div class="box-header">
+            <p class="box-number">1.</p>
+            <h2 class="heading">
+              Метод градиентного спуска с постоянным шагом
+            </h2>
+          </div>
+          <div class="box-content first-solution">
+            <h3 class="main-text answer"></h3>
+            <details class="more">
+              <summary class="main-text more">Подробнее</summary>
+              <p class="main-text solution"></p>
+            </details>
+          </div>
         </div>
-      </div>
-      <div class="box second-box">
-        <div class="box-header">
-          <p class="box-number">2.</p>
-          <h2 class="heading">Метод наискорейшего градиентного спуска</h2>
+        <div class="box second-box">
+          <div class="box-header">
+            <p class="box-number">2.</p>
+            <h2 class="heading">Метод наискорейшего градиентного спуска</h2>
+          </div>
         </div>
-      </div>
-      <div class="box third-box">
-        <div class="box-header">
-          <p class="box-number">3.</p>
-          <h2 class="heading">Метод Ньютона</h2>
+        <div class="box third-box">
+          <div class="box-header">
+            <p class="box-number">3.</p>
+            <h2 class="heading">Метод Ньютона</h2>
+          </div>
         </div>
-      </div>
-      <div class="box fourth-box">
-        <div class="box-header">
-          <p class="box-number">4.</p>
-          <h2 class="heading">Метод Ньютона-Рафсона</h2>
+        <div class="box fourth-box">
+          <div class="box-header">
+            <p class="box-number">4.</p>
+            <h2 class="heading">Метод Ньютона-Рафсона</h2>
+          </div>
         </div>
       </div>
     </main>

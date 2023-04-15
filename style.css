@@ -131,10 +131,12 @@
     font-weight: 500;
     text-align: left;
     font-size: 17px;
+    line-height: 160%;
     color: var(--darkest-gray);
 }
 .main-text p{
   align-self: flex-start;
+  line-height: 160%;
 }
 .box-content{
   display: flex;
@@ -151,4 +153,38 @@
     margin: 0px auto;
     min-height: 100vh;
     max-width: 1300px;
+}
+.first-solution{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: inherit;
+  height: auto;
+  padding: 30px;
+  background: var(--lightest-gray);
+  border-radius: 20px;
+  transition: all .3s ease-in-out;
+}
+.first-solution:hover{
+  box-shadow: 5px 5px var(--green);
+}
+.solution-box{
+  visibility: hidden;
+}
+.answer{
+  font-size: 19px;
+}
+.answer,
+.answer b,
+.solution,
+.solution b,
+.solution sup,
+.more{
+  background: transparent;
+}
+.more{
+  margin: 20px;
+}
+.more:hover{
+  cursor: pointer;
 }
