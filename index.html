@@ -90,6 +90,14 @@
                   <label class="main-text">t<sub>0</sub> = </label>
                 </div>
               </div>
+              <p class="main-text">Количество знаков после запятой:</p>
+              <div class="num-range">
+                <p class="main-text" id="res-range-1">5</p>
+                <div>
+                  <input type="range" id="range-1"
+                  min="1" max="17" step="1" value="5">
+                </div>
+              </div>
             </div>
             <div class="buttons">
               <button class="button appearance-animation solve-button">
@@ -190,6 +198,14 @@
                   value="0.5" />
                 <div class="underline"></div>
                 <label class="main-text">t<sub>0</sub> = </label>
+              </div>
+            </div>
+            <p class="main-text">Количество знаков после запятой:</p>
+            <div class="num-range">
+              <p class="main-text" id="res-range-2">5</p>
+              <div>
+                <input type="range" id="range-2"
+                min="1" max="17" step="1" value="5">
               </div>
             </div>
           </div>
@@ -294,12 +310,20 @@
                 <label class="main-text">t<sub>0</sub> = </label>
               </div>
             </div>
+            <p class="main-text">Количество знаков после запятой:</p>
+            <div class="num-range">
+              <p class="main-text" id="res-range-3">5</p>
+              <div>
+                <input type="range" id="range-3"
+                min="1" max="17" step="1" value="5">
+              </div>
+            </div>
+          </div>
             <div class="buttons">
               <button class="button appearance-animation solve-button">
                 Рассчитать
               </button>
             </div>
-          </div>
           <div class="solution-box">
             <div class="box-content solution-content">
               <h3 class="main-text answer"></h3>
@@ -323,7 +347,6 @@
                     </tr>
                   </thead>
                   <tbody class="main-text solution">
-
                   </tbody>
                 </table>
               </details>
@@ -398,6 +421,14 @@
                 <div class="underline"></div>
                 <label class="main-text">t<sub>0</sub> = </label>
               </div>
+              <p class="main-text">Количество знаков после запятой:</p>
+              <div class="num-range">
+                <p class="main-text" id="res-range-4">5</p>
+                <div>
+                  <input type="range" id="range-4"
+                  min="1" max="17" step="1" value="5">
+                </div>
+              </div>
             </div>
             <div class="buttons">
               <button class="button appearance-animation solve-button">
@@ -410,7 +441,26 @@
               <h3 class="main-text answer"></h3>
               <details class="more">
                 <summary class="main-text more">Подробнее</summary>
-                <p class="main-text solution"></p>
+                <table class="third-table">
+                  <thead>
+                    <tr>
+                      <th>Итерация</th>
+                      <th>k</th>
+                      <th>x<sup>k</sup></th>
+                      <th>f(x<sup>k</sup>)</th>
+                      <th>∇f(x<sup>k</sup>)</th>
+                      <th>||∇f(x<sup>k</sup>)||</th>
+                      <th>H(x<sup>k</sup>)</th>
+                      <th>H<sup>-1</sup>(x<sup>k</sup>)</th>
+                      <th>d<sup>k</sup></th>
+                      <th>t<sup>k</sup></th>
+                      <th>x<sup>k+1</sup></th>
+                      <th>f(x<sup>k+1</sup>) - f(x<sup>k</sup>)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="main-text solution">
+                  </tbody>
+                </table>
               </details>
             </div>
           </div>

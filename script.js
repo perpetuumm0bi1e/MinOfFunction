@@ -17,14 +17,15 @@ let solutionBoxes = document.getElementsByClassName('solution-box'),
     answers = document.getElementsByClassName('answer'),
     functionInput = document.getElementById('function'),
     initials = document.getElementsByClassName('init'),
-    solveButtons = document.getElementsByClassName('solve-button');
-
-let x01 = initials[0].value, 
-    x02 = initials[1].value, 
-    E1 = initials[2].value, 
-    E2 = initials[3].value, 
-    M = initials[4].value, 
-    t0 = initials[5].value;
+    solveButtons = document.getElementsByClassName('solve-button'),
+    resRange1 = document.getElementById('res-range-1'),
+    range1 = document.getElementById('range-1'),
+    resRange2 = document.getElementById('res-range-2'),
+    range2 = document.getElementById('range-2'),
+    resRange3 = document.getElementById('res-range-3'),
+    range3 = document.getElementById('range-3'),
+    resRange4 = document.getElementById('res-range-4'),
+    range4 = document.getElementById('range-4');
 
 class Element {
     constructor(index, x1, exp1, x2, exp2) {
@@ -36,51 +37,82 @@ class Element {
     }
 }
 
-    // метод градиентного спуска с постоянным шагом
+range1.style.backgroundSize = (range1.value - range1.min) * 100 / (range1.max - range1.min) + '% 100%';
+range1.addEventListener('input', function() {
+    resRange1.innerHTML = range1.value;
+    range1.style.backgroundSize = (range1.value - range1.min) * 100 / (range1.max - range1.min) + '% 100%';
+})
+range2.style.backgroundSize = (range2.value - range2.min) * 100 / (range2.max - range2.min) + '% 100%';
+range2.addEventListener('input', function() {
+    resRange2.innerHTML = range2.value;
+    range2.style.backgroundSize = (range2.value - range2.min) * 100 / (range2.max - range2.min) + '% 100%';
+})
+range3.style.backgroundSize = (range3.value - range3.min) * 100 / (range3.max - range3.min) + '% 100%';
+range3.addEventListener('input', function() {
+    resRange3.innerHTML = range3.value;
+    range3.style.backgroundSize = (range3.value - range3.min) * 100 / (range3.max - range3.min) + '% 100%';
+})
+range4.style.backgroundSize = (range4.value - range4.min) * 100 / (range4.max - range4.min) + '% 100%';
+range4.addEventListener('input', function() {
+    resRange4.innerHTML = range4.value;
+    range4.style.backgroundSize = (range4.value - range4.min) * 100 / (range4.max - range4.min) + '% 100%';
+})
+
+// Метод градиентного спуска с постоянным шагом
 solveButtons[0].addEventListener('click', function() {
     solutions[0].innerHTML = '';
     answers[0].innerHTML = '';
 
-    let arr = functionInput.value.split(''),
+    let x01 = initials[0].value, 
+        x02 = initials[1].value, 
+        E1 = initials[2].value, 
+        E2 = initials[3].value, 
+        M = initials[4].value, 
+        t0 = initials[5].value,
+        arr = functionInput.value.split(''),
         func = parseFunction(arr),
         gradient = grad(func),
         solution = false, 
         k = 0, 
         t = t0, 
         x = [], 
-        interation = 1;
+        interation = 1,
+        range = range1.value;
 
-    x[0] = [x01, x02]; 
+    x[k] = [x01, x02]; 
 
     while(!solution && k <= M) {
         let gradientV = gradValue(gradient, x[k]),
             normV = normValue(gradientV);
+
         if(normV < E1){ 
-            answers[0].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+            answers[0].innerHTML += `Решение: { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
             solution = true;
             break;
         } else {
             while(true) {
                 x[k + 1] = nextXfirst(x[k], t, gradient); 
+
                 solutions[0].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
                                             <td>${t}</td>
-                                            <td>(${Number(x[k][0]).toFixed(4)}; ${Number(x[k][1]).toFixed(4)})<sup>T</sup></td>
-                                            <td>${funcValue(func, x[k]).toFixed(4)}</td>
-                                            <td>(${gradientV[0].toFixed(4)}; ${gradientV[1].toFixed(4)})<sup>T</sup></td>
-                                            <td>${normV.toFixed(4)} </td>
-                                            <td>(${Number(x[k + 1][0]).toFixed(4)}; ${Number(x[k + 1][1]).toFixed(4)})<sup>T</sup></td>
-                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(4)}</td></tr>`;
+                                            <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k]).toFixed(range)}</td>
+                                            <td>(${gradientV[0].toFixed(range)}; ${gradientV[1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${normV.toFixed(range)} </td>
+                                            <td>(${Number(x[k + 1][0]).toFixed(range)}; ${Number(x[k + 1][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(range)}</td></tr>`;
+
                 if((funcValue(func, x[k + 1]) - funcValue(func, x[k])) < 0){ 
                     if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
                         solutionBoxes[0].style.visibility = 'visible';
-                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k + 1][0]}, ${x[k + 1][1]}); f(x*) = ${funcValue(func, x[k + 1])} } <br>`;
+                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${Number(x[k + 1][0]).toFixed(range.value)}, ${Number(x[k + 1][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k + 1]).toFixed(range)} } <br>`;
                         solutions[0].innerHTML += `<tr><td>-</td> 
                                                     <td>${k + 1}</td>
                                                     <td>${t}</td>
-                                                    <td>(${Number(x[k + 1][0]).toFixed(4)}; ${Number(x[k + 1][1]).toFixed(4)})<sup>T</sup></td>
-                                                    <td>${funcValue(func, x[k + 1]).toFixed(4)}</td>
-                                                    <td>(${gradValue(gradient, x[k + 1])[0].toFixed(4)}; ${gradValue(gradient, x[k + 1])[1].toFixed(4)})<sup>T</sup></td>
-                                                    <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(4)}</td><td>-</td><td>-</td></tr>`;
+                                                    <td>(${Number(x[k + 1][0]).toFixed(range)}; ${Number(x[k + 1][1]).toFixed(range)})<sup>T</sup></td>
+                                                    <td>${funcValue(func, x[k + 1]).toFixed(range)}</td>
+                                                    <td>(${gradValue(gradient, x[k + 1])[0].toFixed(range)}; ${gradValue(gradient, x[k + 1])[1].toFixed(range)})<sup>T</sup></td>
+                                                    <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(range)}</td><td>-</td><td>-</td></tr>`;
                         solution = true;
                         break;
                     } else {
@@ -97,88 +129,104 @@ solveButtons[0].addEventListener('click', function() {
     }
 });
 
-// метод наискорейшего градиентного спуска
+// Метод наискорейшего градиентного спуска
 solveButtons[1].addEventListener('click', function() {
     solutions[1].innerHTML = '';
     answers[1].innerHTML = '';
 
-    let arr = functionInput.value.split(''),
+    let x01 = initials[6].value, 
+        x02 = initials[7].value, 
+        E1 = initials[8].value, 
+        E2 = initials[9].value, 
+        M = initials[10].value, 
+        t0 = initials[11].value,
+        arr = functionInput.value.split(''),
         func = parseFunction(arr),
         gradient = grad(func),
         solution = false, 
         k = 0, 
         t = t0, 
         x = [], 
-        interation = 1;
+        interation = 1,
+        range = range2.value;
 
-    x[0] = [x01, x02]; 
+    x[k] = [x01, x02]; 
 
     while(!solution && k <= M) {
         let gradientV = gradValue(gradient, x[k]),
             normV = normValue(gradientV);
+
         if(normV < E1){ 
-            answers[0].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+            answers[1].innerHTML += `Решение: { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
             solution = true;
             break;
         } else {
             while(true) {
+                t = (4 * Number(x[k][0]) * gradientV[0] + Number(x[k][0]) * gradientV[1] + Number(x[k][1]) * gradientV[0] + 2 * Number(x[k][1]) * gradientV[1]) / 
+                    (4 * Math.pow(gradientV[0], 2) + 2 * gradientV[0] * gradientV[1] + 2 * Math.pow(gradientV[1], 2));
+
                 x[k + 1] = nextXfirst(x[k], t, gradient); 
-                solutions[0].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
+
+                solutions[1].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
                                             <td>${t}</td>
-                                            <td>(${Number(x[k][0]).toFixed(4)}; ${Number(x[k][1]).toFixed(4)})<sup>T</sup></td>
-                                            <td>${funcValue(func, x[k]).toFixed(4)}</td>
-                                            <td>(${gradientV[0].toFixed(4)}; ${gradientV[1].toFixed(4)})<sup>T</sup></td>
-                                            <td>${normV.toFixed(4)} </td>
-                                            <td>(${Number(x[k + 1][0]).toFixed(4)}; ${Number(x[k + 1][1]).toFixed(4)})<sup>T</sup></td>
-                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(4)}</td></tr>`;
-                if((funcValue(func, x[k + 1]) - funcValue(func, x[k])) < 0){ 
-                    if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
-                        solutionBoxes[0].style.visibility = 'visible';
-                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k + 1][0]}, ${x[k + 1][1]}); f(x*) = ${funcValue(func, x[k + 1])} } <br>`;
-                        solutions[0].innerHTML += `<tr><td>-</td> 
-                                                    <td>${k + 1}</td>
-                                                    <td>${t}</td>
-                                                    <td>(${Number(x[k + 1][0]).toFixed(4)}; ${Number(x[k + 1][1]).toFixed(4)})<sup>T</sup></td>
-                                                    <td>${funcValue(func, x[k + 1]).toFixed(4)}</td>
-                                                    <td>(${gradValue(gradient, x[k + 1])[0].toFixed(4)}; ${gradValue(gradient, x[k + 1])[1].toFixed(4)})<sup>T</sup></td>
-                                                    <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(4)}</td><td>-</td><td>-</td></tr>`;
-                        solution = true;
-                        break;
-                    } else {
-                        k++; 
-                        interation++;
-                        break;
-                    }
+                                            <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k]).toFixed(range)}</td>
+                                            <td>(${gradientV[0].toFixed(range)}; ${gradientV[1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${normV.toFixed(range)} </td>
+                                            <td>(${Number(x[k + 1][0]).toFixed(range)}; ${Number(x[k + 1][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(range)}</td></tr>`;
+
+                if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
+                    solutionBoxes[1].style.visibility = 'visible';
+                    answers[1].innerHTML += `<br><b>Решение:</b> { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
+                    solutions[1].innerHTML += `<tr><td>-</td> 
+                                                <td>${k + 1}</td>
+                                                <td>${t}</td>
+                                                <td>(${Number(x[k + 1][0]).toFixed(range)}; ${Number(x[k + 1][1]).toFixed(range)})<sup>T</sup></td>
+                                                <td>${funcValue(func, x[k + 1]).toFixed(range)}</td>
+                                                <td>(${gradValue(gradient, x[k + 1])[0].toFixed(range)}; ${gradValue(gradient, x[k + 1])[1].toFixed(range)})<sup>T</sup></td>
+                                                <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(range)}</td><td>-</td><td>-</td></tr>`;
+                    solution = true;
+                    break;
                 } else {
-                    t = t / 2; 
-                    interation++;
-                }
+                    k++; 
+                     interation++;
+                      break;
+                    }
             }
         }
     }
 });
 
- // метод Ньютона
+ // Метод Ньютона
 solveButtons[2].addEventListener('click', function() {
     solutions[2].innerHTML = '';
     answers[2].innerHTML = '';
 
-    let arr = functionInput.value.split(''),
+    let x01 = initials[12].value, 
+        x02 = initials[13].value, 
+        E1 = initials[14].value, 
+        E2 = initials[15].value, 
+        M = initials[16].value, 
+        t0 = initials[17].value,
+        arr = functionInput.value.split(''),
         func = parseFunction(arr),
         gradient = grad(func),
         solution = false, 
         k = 0, 
         t = t0, 
         x = [], 
-        interation = 1;
+        interation = 1,
+        range = range3.value;
 
-    x[0] = [x01, x02]; 
+    x[k] = [x01, x02]; 
 
     while(!solution && k <= M) {
         let gradientV = gradValue(gradient, x[k]),
             normV = normValue(gradientV);
+
         if(normV < E1){ 
-            answers[2].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+            answers[2].innerHTML += `Решение: { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
             solution = true;
             break;
         } else {
@@ -193,29 +241,31 @@ solveButtons[2].addEventListener('click', function() {
                     t = -1 * ((x[k][1] / d[1]) + (5 * x[k][0] / d[0])) - 0.000001;
                 }
                 x[k + 1] = [Number(x[k][0]) + t * Number(d[0]), Number(x[k][1]) + t * Number(d[1])]; 
+
                 solutions[2].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
-                                            <td>(${Number(x[k][0]).toFixed(4)}; ${Number(x[k][1]).toFixed(4)})<sup>T</sup></td>
-                                            <td>${funcValue(func, x[k]).toFixed(4)}</td>
-                                            <td>(${gradientV[0].toFixed(4)}; ${gradientV[1].toFixed(4)})<sup>T</sup></td>
-                                            <td>${normV.toFixed(4)}</td>
+                                            <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k]).toFixed(range)}</td>
+                                            <td>(${gradientV[0].toFixed(range)}; ${gradientV[1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${normV.toFixed(range)}</td>
                                             <td>${detHesseMatrix(H, x[k])}</td>
-                                            <td>${detInverseHesseMatrix(H, x[k]).toFixed(4)}</td>
-                                            <td>(${d[0].toFixed(4)}; ${d[1].toFixed(4)})<sup>T</sup></td>
+                                            <td>${detInverseHesseMatrix(H, x[k]).toFixed(range)}</td>
+                                            <td>(${d[0].toFixed(range)}; ${d[1].toFixed(range)})<sup>T</sup></td>
                                             <td>${t}</td>
-                                            <td>(${x[k + 1][0].toFixed(5)}; ${x[k + 1][1].toFixed(4)})<sup>T</sup></td>
-                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(4)}</td></tr>`;
+                                            <td>(${x[k + 1][0].toFixed(5)}; ${x[k + 1][1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(range)}</td></tr>`;
+
                 if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
                     solutionBoxes[2].style.visibility = 'visible';
-                    answers[2].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+                    answers[2].innerHTML += `<br><b>Решение:</b> { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
                     solutions[2].innerHTML += `<tr><td>-</td> 
                                                 <td>${k + 1}</td>
-                                                <td>(${Number(x[k][0]).toFixed(4)}; ${Number(x[k][1]).toFixed(4)})<sup>T</sup></td>
-                                                <td>${funcValue(func, x[k + 1]).toFixed(4)}</td>
-                                                <td>(${gradValue(gradient, x[k + 1])[0].toFixed(4)}; ${gradValue(gradient, x[k + 1])[1].toFixed(4)})<sup>T</sup></td>
-                                                <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(4)}</td>
+                                                <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                                <td>${funcValue(func, x[k + 1]).toFixed(range)}</td>
+                                                <td>(${gradValue(gradient, x[k + 1])[0].toFixed(range)}; ${gradValue(gradient, x[k + 1])[1].toFixed(range)})<sup>T</sup></td>
+                                                <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(range)}</td>
                                                 <td>${detHesseMatrix(H, x[k])}</td>
-                                                <td>${detInverseHesseMatrix(H, x[k]).toFixed(4)}</td>
-                                                <td>(${d[0].toFixed(4)}; ${d[1].toFixed(4)})<sup>T</sup></td>
+                                                <td>${detInverseHesseMatrix(H, x[k]).toFixed(range)}</td>
+                                                <td>(${d[0].toFixed(range)}; ${d[1].toFixed(range)})<sup>T</sup></td>
                                                 <td>${t}</td><td>-</td><td>-</td></tr>`;
                     solution = true;
                     break;
@@ -228,11 +278,87 @@ solveButtons[2].addEventListener('click', function() {
         }
     }
 });
-solveButtons[3].addEventListener('click', function() {
-    solutionBoxes[3].style.visibility = 'visible';
+solveButtons[3].addEventListener('click', function() { 
+    solutions[3].innerHTML = '';
+    answers[3].innerHTML = '';
+
+    let x01 = initials[18].value, 
+        x02 = initials[19].value, 
+        E1 = initials[20].value, 
+        E2 = initials[21].value, 
+        M = initials[22].value, 
+        t0 = initials[23].value,
+        arr = functionInput.value.split(''),
+        func = parseFunction(arr),
+        gradient = grad(func),
+        solution = false, 
+        k = 0, 
+        t = t0, 
+        x = [], 
+        interation = 1,
+        range = range4.value;
+    x[k] = [x01, x02]; 
+
+    while(!solution && k <= M) {
+        let gradientV = gradValue(gradient, x[k]),
+            normV = normValue(gradientV);
+
+        if(normV < E1){ 
+            answers[3].innerHTML += `Решение: { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
+            solution = true;
+            break;
+        } else {
+            while(true) {
+                let d = [], H = HesseMatrix(gradient);
+
+                if(detInverseHesseMatrix(H, x[k]) > 0){
+                    d = [-1 * detInverseHesseMatrix(H, x[k]) * gradValue(gradient, x[k])[0], -1 * detInverseHesseMatrix(H, x[k]) * gradValue(gradient, x[k])[1]];
+                } else {
+                    d = [-1 * gradValue(gradient, x[k])[0], -1 * gradValue(gradient, x[k])[1]];
+                }
+                t = (-1 * (4 * Number(x[k][0]) * d[0] + Number(x[k][0]) * d[1] + Number(x[k][1]) * d[0] + 2 * Number(x[k][1]) * d[1])) / 
+                    (4 * Math.pow(d[0], 2) + 2 * d[0] * d[1] + 2 * Math.pow(d[1], 2));
+
+                x[k + 1] = [Number(x[k][0]) + t * Number(d[0]), Number(x[k][1]) + t * Number(d[1])]; 
+
+                solutions[3].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
+                                            <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k]).toFixed(range)}</td>
+                                            <td>(${gradientV[0].toFixed(range)}; ${gradientV[1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${normV.toFixed(range)}</td>
+                                            <td>${detHesseMatrix(H, x[k])}</td>
+                                            <td>${detInverseHesseMatrix(H, x[k]).toFixed(range)}</td>
+                                            <td>(${d[0].toFixed(range)}; ${d[1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${t}</td>
+                                            <td>(${x[k + 1][0].toFixed(range)}; ${x[k + 1][1].toFixed(range)})<sup>T</sup></td>
+                                            <td>${(funcValue(func, x[k + 1]) - funcValue(func, x[k])).toFixed(range)}</td></tr>`;
+
+                if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
+                    solutionBoxes[3].style.visibility = 'visible';
+                    answers[3].innerHTML += `<br><b>Решение:</b> { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
+                    solutions[3].innerHTML += `<tr><td>-</td> 
+                                                <td>${k + 1}</td>
+                                                <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                                <td>${funcValue(func, x[k + 1]).toFixed(range)}</td>
+                                                <td>(${gradValue(gradient, x[k + 1])[0].toFixed(range)}; ${gradValue(gradient, x[k + 1])[1].toFixed(range)})<sup>T</sup></td>
+                                                <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(range)}</td>
+                                                <td>${detHesseMatrix(H, x[k])}</td>
+                                                <td>${detInverseHesseMatrix(H, x[k]).toFixed(range)}</td>
+                                                <td>(${d[0].toFixed(range)}; ${d[1].toFixed(range)})<sup>T</sup></td>
+                                                <td>${t}</td><td>-</td><td>-</td></tr>`;
+                    solution = true;
+                    break;
+                } else {
+                    k++; 
+                    interation++;
+                    break;
+                }
+            }
+        }
+    }
 });
 
-// разбиентие входной функции на массив с объектами (слагаемыми)
+// Разбитие входной функции на массив с объектами (слагаемыми)
 let parseFunction = function(arr) {
     let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let i = 0,
@@ -277,15 +403,12 @@ let parseFunction = function(arr) {
     return func;
 }
 
+// Формирование матрицы Гессе
 let HesseMatrix = function (gradient){
-    console.log("HesseMatrix: ");
-    console.log("grad(gradient[0]): ");
-    console.log(grad(gradient[0]));
-    console.log("grad(gradient[1]): ");
-    console.log(grad(gradient[1]));
     return[grad(gradient[0]), grad(gradient[1])];
 }
 
+// Вычисление определителя матрицы Гессе
 let detHesseMatrix = function(H, x) {
     let H1 = H[0],
         H2 = H[1],
@@ -296,6 +419,8 @@ let detHesseMatrix = function(H, x) {
     }
     return (elemValues[0] * elemValues[3] - elemValues[1] * elemValues[2]);
 }
+
+// Вычисление опредеителя обратной матрицы Гессе
 let detInverseHesseMatrix = function (H, x){
     let det = detHesseMatrix(H, x);
     let H1 = gradValue(H[0], x),
@@ -307,7 +432,8 @@ let detInverseHesseMatrix = function (H, x){
     A[3] = H1[0] / det; 
     return (A[0] * A[3] - A[1] * A[2]);
 }
-// значение функции в точке
+
+// Вычисление значения функции в точке
 let funcValue = function(func, x){
     let ntn, value = [];
     for(let j = 0; j < func.length; j++){
@@ -318,7 +444,7 @@ let funcValue = function(func, x){
     return arrSum(value);
 }
 
-// вычислние градиента
+// Расчет градиента
 let grad = function(func) {
     let gradX1 = [],
         gradX2 = [];
@@ -348,7 +474,7 @@ let grad = function(func) {
     return [gradX1, gradX2];
 }
 
-// значение градиент в очке
+// Вычисление значение градиент в очке
 let gradValue = function(grad, x) {
     let ntn, res = [];
     for(let i = 0; i < grad.length; i++){
@@ -365,7 +491,7 @@ let gradValue = function(grad, x) {
     return res;
 }
 
-// вычисление нормы
+// Вычисление нормы
 let normValue = function(f) {
     let norm = 0;
     for(let i = 0; i < f.length; i++)
@@ -373,7 +499,7 @@ let normValue = function(f) {
     return Math.sqrt(norm);
 }
 
-// вычисление суммы элементов массива
+// Вычисление суммы элементов массива
 let arrSum = function(arr) {
     let res = 0;
     for(let k = 0; k < arr.length; k++)
@@ -381,10 +507,9 @@ let arrSum = function(arr) {
     return res;
 }
 
-// вычисление x^k+1 для метода спуска с постоянным шагом
+// Вычисление x^k+1 для метода спуска с постоянным шагом
 let nextXfirst = function(xk, tk, grad){
-        return [xk[0] - tk * gradValue(grad, xk)[0], xk[1] - tk * gradValue(grad, xk)[1]];
-     
+    return [xk[0] - tk * gradValue(grad, xk)[0], xk[1] - tk * gradValue(grad, xk)[1]]; 
 }
 
 let findTk = function(grad, xk, f){
@@ -415,9 +540,3 @@ let findTk = function(grad, xk, f){
     }
     console.log(newf);
 }
-
-
-
-
-
-
