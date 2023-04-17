@@ -34,7 +34,7 @@
   align-items: center;
 }
 .button {
-  margin: 100px auto 0px auto;
+  margin: 70px auto 0px auto;
   width: 400px;
   height: 40px;
   font-family: 'Manrope', sans-serif;
@@ -57,9 +57,9 @@
   cursor: pointer;
 }
 .input-data{
-  margin: 80px auto;
+  margin: 50px auto;
   height: 40px;
-  width: 400px;
+  width: 300px;
   position: relative;
 }
 .input-data input{
@@ -102,6 +102,25 @@
 .input-data input:valid ~ .underline:before{
   transform: scaleX(1);
 }
+.determined-label{
+  position: absolute;
+  margin: 0px 200px 0px 0px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  text-align: left;
+  font-size: 17px;
+  line-height: 160%;
+  color: var(--gray);
+}
+.determined-function{
+  margin: 50px auto;
+  height: 40px;
+  width: 300px;
+  border-bottom: 2px solid var(--blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .initial-values{
   margin: 0px auto;
   max-width: inherit;
@@ -143,7 +162,7 @@
   align-content: center;
 }
 .box{
-    margin: 100px auto;
+    margin: 70px auto;
 }
 .content{
     display: flex;
@@ -159,7 +178,7 @@
   align-items: center;
   width: inherit;
   height: auto;
-  padding: 30px 50px;
+  padding: 30px;
   background: var(--lightest-gray);
   border-radius: 20px;
   transition: all .3s ease-in-out;
@@ -171,7 +190,7 @@
   visibility: hidden;
 }
 .answer{
-  font-size: 19px;
+  font-size: 18px;
 }
 .answer,
 .answer b,
@@ -193,32 +212,38 @@
 table {
   font-family: 'Manrope', sans-serif;
   margin: 0px auto;
-  max-height: 400px;
+  max-height: 500px;
   width: inherit;
   border: 1px solid var(--light-gray);
   border-spacing: 0px;
   border-collapse: collapse;
   background: var(--lightest-gray);
 }
-
+.first-table td,
+th{
+  width: 11.111111%;
+}
+.third-table td,
+th{
+  width: 8.3333333%;
+}
 td,
 th {
-  width: 11.1%;
   border: 1px solid var(--light-gray);
   text-align: center;
-  padding: 10px 2px;
+  padding: 10px 15px;
   vertical-align: baseline;
   background: var(--lightest-gray);
 }
 
 td {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--dark-gray);
   border-radius: 7px;
 }
 
 th {
-  font-size: 17px;
+  font-size: 15px;
   color: var(--darkest-gray);
 }
 

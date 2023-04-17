@@ -102,22 +102,21 @@
               <h3 class="main-text answer"></h3>
               <details class="more">
                 <summary class="main-text more">Подробнее</summary>
-                <table>
+                <table class="first-table">
                   <thead>
                     <tr>
                       <th>Итерация</th>
                       <th>k</th>
-                      <th>t</th>
+                      <th>t<sup>k</sup></th>
                       <th>x<sup>k</sup></th>
                       <th>f(x<sup>k</sup>)</th>
                       <th>∇f(x<sup>k</sup>)</th>
-                      <th>|| ∇f(x<sup>k</sup>) ||</th>
+                      <th>||∇f(x<sup>k</sup>)||</th>
                       <th>x<sup>k+1</sup></th>
                       <th>f(x<sup>k+1</sup>) - f(x<sup>k</sup>)</th>
                     </tr>
                   </thead>
                   <tbody class="main-text solution">
-
                   </tbody>
                 </table>
               </details>
@@ -131,7 +130,10 @@
           </div>
           <div class="box start">
             <p class="main-text">Заданная функция:</p>
-              <p class="main-text">f(x) = 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
+            <div class="determined-function">
+              <label class="determined-label">f(x) = </label>
+              <p class="main-text"> 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
+            </div>
             <p class="main-text">Исходные данные:</p>
             <div class="initial-values">
               <div class="input-data initial-value">
@@ -202,7 +204,23 @@
             <h3 class="main-text answer"></h3>
             <details class="more">
               <summary class="main-text more">Подробнее</summary>
-              <p class="main-text solution"></p>
+              <table class="first-table">
+                <thead>
+                  <tr>
+                    <th>Итерация</th>
+                    <th>k</th>
+                    <th>t<sup>k</sup></th>
+                    <th>x<sup>k</sup></th>
+                    <th>f(x<sup>k</sup>)</th>
+                    <th>∇f(x<sup>k</sup>)</th>
+                    <th>||∇f(x<sup>k</sup>)||</th>
+                    <th>x<sup>k+1</sup></th>
+                    <th>f(x<sup>k+1</sup>) - f(x<sup>k</sup>)</th>
+                  </tr>
+                </thead>
+                <tbody class="main-text solution">
+                </tbody>
+              </table>
             </details>
           </div>
         </div>
@@ -213,15 +231,10 @@
             <h2 class="heading">Метод Ньютона</h2>
           </div>
           <div class="box start">
-            <p class="main-text">Введите функцию:</p>
-            <div class="input-data">
-              <input
-                type="text"
-                id="function"
-                required
-                value="2*x1^2+x1*x2+x2^2" />
-              <div class="underline"></div>
-              <label class="main-text">f(x) = </label>
+            <p class="main-text">Заданная функция:</p>
+            <div class="determined-function">
+              <label class="determined-label">f(x) = </label>
+              <p class="main-text"> 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
             </div>
             <p class="main-text">Исходные данные:</p>
             <div class="initial-values">
@@ -292,7 +305,27 @@
               <h3 class="main-text answer"></h3>
               <details class="more">
                 <summary class="main-text more">Подробнее</summary>
-                <p class="main-text solution"></p>
+                <table class="third-table">
+                  <thead>
+                    <tr>
+                      <th>Итерация</th>
+                      <th>k</th>
+                      <th>x<sup>k</sup></th>
+                      <th>f(x<sup>k</sup>)</th>
+                      <th>∇f(x<sup>k</sup>)</th>
+                      <th>||∇f(x<sup>k</sup>)||</th>
+                      <th>H(x<sup>k</sup>)</th>
+                      <th>H<sup>-1</sup>(x<sup>k</sup>)</th>
+                      <th>d<sup>k</sup></th>
+                      <th>t<sup>k</sup></th>
+                      <th>x<sup>k+1</sup></th>
+                      <th>f(x<sup>k+1</sup>) - f(x<sup>k</sup>)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="main-text solution">
+
+                  </tbody>
+                </table>
               </details>
             </div>
           </div>
@@ -304,7 +337,10 @@
           </div>
           <div class="box start">
             <p class="main-text">Заданная функция:</p>
-              <p class="main-text">f(x) = 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
+            <div class="determined-function">
+              <label class="determined-label">f(x) = </label>
+              <p class="main-text"> 2x<sup>2</sup><sub>1</sub> + x<sub>1</sub>x<sub>2</sub> + x<sup>2</sup><sub>2</sub></p>
+            </div>
             <p class="main-text">Исходные данные:</p>
             <div class="initial-values">
               <div class="input-data initial-value">
