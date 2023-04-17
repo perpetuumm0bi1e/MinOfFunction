@@ -190,3 +190,43 @@
 .solution{
   font-size: 15px;
 }
+table {
+  font-family: 'Manrope', sans-serif;
+  margin: 0px auto;
+  max-height: 400px;
+  width: inherit;
+  border: 1px solid var(--light-gray);
+  border-spacing: 0px;
+  border-collapse: collapse;
+  background: var(--lightest-gray);
+}
+
+td,
+th {
+  width: 11.1%;
+  border: 1px solid var(--light-gray);
+  text-align: center;
+  padding: 10px 2px;
+  vertical-align: baseline;
+  background: var(--lightest-gray);
+}
+
+td {
+  font-size: 15px;
+  color: var(--dark-gray);
+  border-radius: 7px;
+}
+
+th {
+  font-size: 17px;
+  color: var(--darkest-gray);
+}
+
+th > sup{
+  background: var(--lightest-gray);
+}
+tr {
+  border: 1px solid var(--light-gray);
+  transition: all 0.35s ease-in-out;
+  background: var(--lightest-gray);
+}

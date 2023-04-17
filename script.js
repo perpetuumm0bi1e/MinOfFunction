@@ -36,12 +36,135 @@ class Element {
     }
 }
 
+    // метод градиентного спуска с постоянным шагом
 solveButtons[0].addEventListener('click', function() {
     solutions[0].innerHTML = '';
     answers[0].innerHTML = '';
-    let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
     let arr = functionInput.value.split('');
-    let func = [];
+    let func = parseFunction(arr);
+    let gradient = grad(func); 
+    let solution = false, k = 0, t = t0, x = [];
+    x[0] = [x01, x02]; 
+    let interation = 1;
+    while(!solution) {
+        if(k > M){
+            break;
+        }
+        let gradientV = gradValue(gradient, x[k]);
+        let normV = normValue(gradientV);
+        if(normV < E1){ 
+            answers[0].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+            solution = true;
+            break;
+        } else {
+            while(true) {
+                x[k + 1] = nextXfirst(x[k], t, gradient); 
+                solutions[0].innerHTML += `<tr><td>${interation}</td> <td>${k}</td>
+                                            <td>${t}</td>
+                                            <td>(${x[k][0]}; ${x[k][1]})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k])}</td>
+                                            <td>(${gradientV[0]}; ${gradientV[1]})<sup>T</sup></td>
+                                            <td>${normV} </td>
+                                            <td>(${x[k + 1][0]}; ${x[k + 1][1]})<sup>T</sup></td>
+                                            <td>${funcValue(func, x[k + 1]) - funcValue(func, x[k])}</td></tr>`;
+                if((funcValue(func, x[k + 1]) - funcValue(func, x[k])) < 0){ 
+                    if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
+                        solutionBoxes[0].style.visibility = 'visible';
+                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k + 1][0]}, ${x[k + 1][1]}); f(x*) = ${funcValue(func, x[k + 1])} } <br>`;
+                        solutions[0].innerHTML += `<tr><td>-</td> 
+                        <td>${k + 1}</td>
+                        <td>${t}</td>
+                        <td>(${x[k + 1][0]}; ${x[k + 1][1]})<sup>T</sup></td>
+                        <td>${funcValue(func, x[k + 1])}</td>
+                        <td>(${gradValue(gradient, x[k + 1])[0]}; ${gradValue(gradient, x[k + 1])[1]})<sup>T</sup></td>
+                        <td>${normValue(gradValue(gradient, x[k + 1]))}</td><td>-</td><td>-</td></tr>`;
+                        solution = true;
+                        break;
+                    } else {
+                        k++; 
+                        interation++;
+                        break;
+                    }
+                } else {
+                    t = t / 2; 
+                    interation++;
+                }
+            }
+        }
+    }
+});
+
+solveButtons[1].addEventListener('click', function() {
+    solutionBoxes[1].style.visibility = 'visible';
+});
+
+ // метод Ньютона
+solveButtons[2].addEventListener('click', function() {
+    solutions[2].innerHTML = '';
+    answers[2].innerHTML = '';
+
+    let arr = functionInput.value.split('');
+    let func = parseFunction(arr);
+    let gradient = grad(func);
+    let H = HesseMatrix(gradient);
+    //console.log(func);
+    //console.log(gradient);
+    let solution = false, k = 0, t = t0, x = [];
+    x[0] = [x01, x02]; 
+
+    console.log(H);
+    let det = detHesseMatrix(H, x[0]);
+    console.log(det);
+    while(!solution) {
+        if(k > M){
+            break;
+        }
+        let gradientV = gradValue(gradient, x[k]);
+        let normV = normValue(gradientV);
+        solutions[2].innerHTML += `<br><b>k = ${k}:</b> <br><br> 
+                                  ∇f(x<sup>k</sup>) = (${gradientV[0]}; ${gradientV[1]})<sup>T</sup> <br>
+                                  || ∇f(x<sup>k</sup>) || = ${normValue(gradientV)} <br>
+                                  f(x<sup>k</sup>) = ${funcValue(func, x[k])} <br>`;
+        if(normV < E1){ 
+            answers[2].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+            solution = true;
+            break;
+        } else {
+            while(true) {
+                let H = HesseMatrix(gradient);
+                let d;
+                if(detInverseHesseMatrix(H, x[k]) > 0){
+                    d = -1 *  detInverseHesseMatrix(H, x[k]) * gradValue(gradient, x[k]);
+                    t = 1;
+                } else {
+                    d = -1 * gradValue(gradient, x[k]);
+                    // Еще вычислить т из какого-то условия
+                }
+                x[k + 1] = x[k] + t * d; 
+                solutions[2].innerHTML += `x<sup>k+1</sup> = (${x[k + 1][0]}; ${x[k + 1][1]})<sup>T</sup> <br>
+                                          f(x<sup>k+1</sup>) - f(x<sup>k</sup>) = ${funcValue(func, x[k + 1]) - funcValue(func, x[k])} <br>
+                                          ||x<sup>k+1</sup> - x<sup>k</sup>|| = ${normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]])} <br>`;
+                if(normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E1){
+                    solutionBoxes[2].style.visibility = 'visible';
+                    answers[2].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
+                    solution = true;
+                    break;
+                } else {
+                    k++; 
+                    break;
+                }
+            }
+        }
+    }
+});
+solveButtons[3].addEventListener('click', function() {
+    solutionBoxes[3].style.visibility = 'visible';
+});
+
+// разбиентие входной функции на массив с объектами (слагаемыми)
+let parseFunction = function(arr) {
+    let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     let i = 0,
         x1 = '',
         index = 1,
@@ -49,7 +172,7 @@ solveButtons[0].addEventListener('click', function() {
         x2 = '',
         exp2 = 1,
         ntn = 0;
-
+    let func = [];
     for (let j = 0; j < arr.length; j++) {
         if (arr[j] == '-' && index == 1 && x1 == '' && exp1 == 1 && x2 == '' && exp2 == 1) { 
             index *= -1;
@@ -81,62 +204,115 @@ solveButtons[0].addEventListener('click', function() {
         (j == arr.length - 1) ?
         (func[i] = new Element(index, x1, exp1, x2, exp2), index = 1, x1 = '', exp1 = 1, x2 = '', exp2 = 1) : ntn++;
     }
-    let gradient = grad(func); // массив объектов со значениями градиента
+    return func;
+}
 
-    x = [];
-    x[0] = [x01, x02]; 
-    let solution = false;
-    let k = 0, t = t0;
-    // метод градиентного спуска с постоянным шагом
-    while(!solution) {
-        if(k > M){
-            break;
-        }
-        let gradientV = gradValue(gradient, x[k]);
-        let normV = normValue(gradientV);
-        solutions[0].innerHTML += `<br><b>k = ${k}:</b> <br><br> 
-                                  ∇f(x<sup>k</sup>) = (${gradientV[0]}; ${gradientV[1]})<sup>T</sup> <br>
-                                  || ∇f(x<sup>k</sup>) || = ${normV} <br>
-                                  f(x<sup>k</sup>) = ${funcValue(func, x[k])} <br>`;
-        if(normV < E1){ 
-            console.log('Решение: { x* = (' + x[k][0] + ', ' + x[k][1] + '); f(x*) = ' + funcValue(func, x[k]) + ' }');
-            answers[0].innerHTML += `Решение: { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
-            solution = true;
-            break;
-        } else {
-            while(true) {
-                x[k + 1] = nextX(x[k], t, gradient); 
-                solutions[0].innerHTML += `x<sup>k+1</sup> = (${x[k + 1][0]}; ${x[k + 1][1]})<sup>T</sup> <br>
-                                          f(x<sup>k+1</sup>) - f(x<sup>k</sup>) = ${funcValue(func, x[k + 1]) - funcValue(func, x[k])} <br>`;
-                if((funcValue(func, x[k + 1]) - funcValue(func, x[k])) < 0){ 
-                    let newX = [x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]];
-                    if(normValue(newX) < E1 && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k + 1])) < E1){
-                        console.log('Решение: { x* = (' + x[k][0] + ', ' + x[k][1] + '); f(x*) = ' + funcValue(func, x[k]) + ' }');
-                        solutionBoxes[0].style.visibility = 'visible';
-                        answers[0].innerHTML += `<br><b>Решение:</b> { x* = ( ${x[k][0]}, ${x[k][1]}); f(x*) = ${funcValue(func, x[k])} } <br>`;
-                        solution = true;
-                        break;
-                    } else {
-                        k++; 
-                        break;
-                    }
-                } else {
-                    t /= 2;
-                }
-            }
+let HesseMatrix = function (gradient){
+    return[grad(gradient[0]), grad(gradient[1])];
+}
+
+let detHesseMatrix = function(H, x) {
+    let H1 = H[0],
+        H2 = H[1],
+        elemValues = [];
+    for (let i = 0; i < 2; i++){
+        elemValues[i] = funcValue(H1[i], x);
+        elemValues[i + 2] = funcValue(H2[i], x);
+    }
+    return (elemValues[0] * elemValues[3] - elemValues[1] * elemValues[2]);
+}
+let detInverseHesseMatrix = function (H, x){
+    let det = detHesseMatrix(H, x);
+    let H1 = H[0],
+        H2 = H[1],
+        A = [];
+    A[0] = H2[1] / det;
+    A[1] = -1 * H2[0] / det;
+    A[2] = -1 * H1[1] / det;
+    A[3] = H1[0] / det; 
+
+    return (A[0] * A[3] - A[1] * A[2]);
+}
+// значение функции в точке
+let funcValue = function(func, x){
+    let ntn, value = [];
+    for(let j = 0; j < func.length; j++){
+        value[j] = func[j].index;
+            (func[j].x1 != '') ? value[j] *= Math.pow(x[0], func[j].exp1) : ntn++;
+            (func[j].x2 != '') ? value[j] *= Math.pow(x[1], func[j].exp2) : ntn++;
+    }
+    return arrSum(value);
+}
+
+// вычислние градиента
+let grad = function(func) {
+    let gradX1 = [],
+        gradX2 = [];
+    for (let j = 0; j < func.length; j++) {
+        if (func[j].x1 != '' && func[j].x2 == '') { // только A
+            (func[j].exp1 == 1) ?
+            gradX1[j] = new Element(func[j].index * func[j].exp1, '', func[j].exp1 - 1, func[j].x2, 0):
+            gradX1[j] = new Element(func[j].index * func[j].exp1, func[j].x1, func[j].exp1 - 1, func[j].x2, 0);
+            gradX2[j] = new Element(0, '', 0, '', 0);
+        } else if (func[j].x1 == '' && func[j].x2 != '') { // только B
+            (func[j].exp2 == 1) ?
+            gradX2[j] = new Element(func[j].index * func[j].exp2, func[j].x1, 0, '', func[j].exp2 - 1):
+            gradX2[j] = new Element(func[j].index * func[j].exp2, func[j].x1, 0, func[j].x2, func[j].exp2 - 1);
+                gradX1[j] = new Element(0, '', 0, '', 0);
+        } else if (func[j].x2 == '' && func[j].x1 == '') { // ни одного множителя
+            gradX1[j] = new Element(0, '', 0, '', 0);
+            gradX2[j] = new Element(0, '', 0, '', 0);
+        } else if (func[j].x2 != '' && func[j].x1 != '') { // оба множителя 
+            (func[j].exp1 == 1) ? // степень A = 1
+            gradX1[j] = new Element(func[j].index * func[j].exp1, '', func[j].exp1 - 1, func[j].x2, func[j].exp2):
+            gradX1[j] = new Element(func[j].index * func[j].exp1, func[j].x1, func[j].exp1 - 1, func[j].x2, func[j].exp2);
+            (func[j].exp2 == 1) ?
+            gradX2[j] = new Element(func[j].index * func[j].exp2, func[j].x1, func[j].exp1, '', func[j].exp2 - 1):
+            gradX2[j] = new Element(func[j].index * func[j].exp2, func[j].x1, func[j].exp1, func[j].x2, func[j].exp2 - 1);
         }
     }
-});
+    return [gradX1, gradX2];
+}
 
-solveButtons[1].addEventListener('click', function() {
-    solutionBoxes[1].style.visibility = 'visible';
-});
-solveButtons[2].addEventListener('click', function() {
-    solutionBoxes[2].style.visibility = 'visible';
-});
-solveButtons[3].addEventListener('click', function() {
-    solutionBoxes[3].style.visibility = 'visible';
-});
+// значение градиент в очке
+let gradValue = function(grad, x) {
+    let ntn, res = [];
+    for(let i = 0; i < grad.length; i++){
+        let value = [];
+        for(let j = 0; j < grad[i].length; j++){
+            value[j] = grad[i][j].index;
+            if(value[j] != 0){
+                (grad[i][j].x1 != '') ? value[j] *= Math.pow(x[0], grad[i][j].exp1) : ntn++;
+                (grad[i][j].x2 != '') ? value[j] *= Math.pow(x[1], grad[i][j].exp2) : ntn++;
+            }
+            res[i] = arrSum(value);
+        }
+    }
+    return res;
+}
+
+// вычисление нормы
+let normValue = function(f) {
+    let norm = 0;
+    for(let i = 0; i < f.length; i++)
+        norm += Math.pow(f[i], 2);
+    return Math.sqrt(norm);
+}
+
+// вычисление суммы элементов массива
+let arrSum = function(arr) {
+    let res = 0;
+    for(let k = 0; k < arr.length; k++)
+        res += arr[k];
+    return res;
+}
+
+// вычисление x^k+1 для метода спуска с постоянным шагом
+let nextXfirst = function(xk, tk, grad){
+        return [xk[0] - tk * gradValue(grad, xk)[0], xk[1] - tk * gradValue(grad, xk)[1]];
+     
+}
+
 let findTk = function(grad, xk, f){
     let x = [];
     let gradV = gradValue(grad, xk);
@@ -165,78 +341,9 @@ let findTk = function(grad, xk, f){
     }
     console.log(newf);
 }
-// вычисление x^k+1
-let nextX = function(xk, tk, grad){
-    return [xk[0] - tk * gradValue(grad, xk)[0], xk[1] - tk * gradValue(grad, xk)[1]];
-}
-// значение функции в точке
-let funcValue = function(func, x){
-    let ntn, value = [];
-    for(let j = 0; j < func.length; j++){
-        value[j] = func[j].index;
-            (func[j].x1 != '') ? value[j] *= Math.pow(x[0], func[j].exp1) : ntn++;
-            (func[j].x2 != '') ? value[j] *= Math.pow(x[1], func[j].exp2) : ntn++;
-    }
-    return arrSum(value);
-}
-// значение градиент в очке
-let gradValue = function(grad, x) {
-    let ntn, res = [];
-    for(let i = 0; i < grad.length; i++){
-        let value = [];
-        for(let j = 0; j < grad[i].length; j++){
-            value[j] = grad[i][j].index;
-            if(value[j] != 0){
-                (grad[i][j].x1 != '') ? value[j] *= Math.pow(x[0], grad[i][j].exp1) : ntn++;
-                (grad[i][j].x2 != '') ? value[j] *= Math.pow(x[1], grad[i][j].exp2) : ntn++;
-            }
-            res[i] = arrSum(value);
-        }
-    }
-    return res;
-}
 
-// вычисление нормы
-let normValue = function(f) {
-    let norm = 0;
-    for(let i = 0; i < f.length; i++)
-        norm += Math.pow(f[i], 2);
-    return Math.sqrt(norm);
-}
 
-// вычислние градиента
-let grad = function(func) {
-    let gradA = [],
-        gradB = [];
-    for (let j = 0; j < func.length; j++) {
-        if (func[j].x1 != '' && func[j].x2 == '') { // только A
-            (func[j].exp1 == 1) ?
-            gradA[j] = new Element(func[j].index * func[j].exp1, '', func[j].exp1 - 1, func[j].x2, 0):
-                gradA[j] = new Element(func[j].index * func[j].exp1, func[j].x1, func[j].exp1 - 1, func[j].x2, 0);
-            gradB[j] = new Element(0, '', 0, '', 0);
-        } else if (func[j].x1 == '' && func[j].x2 != '') { // только B
-            (func[j].exp2 == 1) ?
-            gradB[j] = new Element(func[j].index * func[j].exp2, func[j].x1, 0, '', func[j].exp2 - 1):
-                gradB[j] = new Element(func[j].index * func[j].exp2, func[j].x1, 0, func[j].x2, func[j].exp2 - 1);
-            gradA[j] = new Element(0, '', 0, '', 0);
-        } else if (func[j].x2 == '' && func[j].x1 == '') { // ни одного множителя
-            gradA[j] = new Element(0, '', 0, '', 0);
-            gradB[j] = new Element(0, '', 0, '', 0);
-        } else if (func[j].x2 != '' && func[j].x1 != '') { // оба множителя 
-            (func[j].exp1 == 1) ? // степень A = 1
-            gradA[j] = new Element(func[j].index * func[j].exp1, '', func[j].exp1 - 1, func[j].x2, func[j].exp2):
-                gradA[j] = new Element(func[j].index * func[j].exp1, func[j].x1, func[j].exp1 - 1, func[j].x2, func[j].exp2);
-            (func[j].exp2 == 1) ?
-            gradB[j] = new Element(func[j].index * func[j].exp2, func[j].x1, func[j].exp1, '', func[j].exp2 - 1):
-                gradB[j] = new Element(func[j].index * func[j].exp2, func[j].x1, func[j].exp1, func[j].x2, func[j].exp2 - 1);
-        }
-    }
-    return [gradA, gradB];
-}
 
-let arrSum = function(arr) {
-    let res = 0;
-    for(let k = 0; k < arr.length; k++)
-        res += arr[k];
-    return res;
-}
+
+
+
