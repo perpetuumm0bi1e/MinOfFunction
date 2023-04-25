@@ -152,7 +152,7 @@
 input[type="range"] {
     -webkit-appearance: none;
     margin-right: 1.5rem;
-    width: 35re, ;
+    width: 35rem;
     height: .5rem;
     background: var(--light-gray);
     border-radius: .5rem;
