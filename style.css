@@ -196,6 +196,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .input-data input {
+    -webkit-appearance: none;
     height: 100%;
     width: 100%;
     border: none;
