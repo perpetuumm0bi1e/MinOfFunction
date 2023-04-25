@@ -189,6 +189,11 @@ input[type=range]::-webkit-slider-runnable-track {
     font-size: 2rem;
 }
 
+input[type="text"] {
+    -webkit-appearance: none;
+    border-radius: 0;
+}
+
 .input-data {
     position: relative;
     margin: 5rem auto;
@@ -197,8 +202,6 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 .input-data input {
-    -webkit-appearance: none;
-    -webkit-border-radius: 0px;
     height: 100%;
     width: 100%;
     border: none;
