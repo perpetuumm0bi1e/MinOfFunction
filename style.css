@@ -228,7 +228,7 @@ input[type="text"] {
     position: absolute;
     height: .2rem;
     width: 100%;
-    bottom: -0.4rem;
+    bottom: 0rem
 }
 
 .input-data .underline:before {
