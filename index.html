@@ -361,6 +361,81 @@
                     </details>
                 </div>
             </div>
+            <div class="box fourth-box">
+                <div class="box-header">
+                    <p class="box-number">5.</p>
+                    <h2 class="heading">Метод Внешних штрафов</h2>
+                </div>
+                <div class="box start">
+                    <p class="main-text">Заданная функция:</p>
+                    <div class="determined-function">
+                        <label class="determined-label">f(x) = </label>
+                        <p class="main-text"> x<sup>1</sup> + x<sup>2</sup> - 2
+                            <=0 </p>
+                    </div>
+                    <p class="main-text">Штрафная функция:</p>
+                    <div class="determined-function">
+                        <label class="determined-label">g(x) = </label>
+                        <p class="main-text"> x<sub>1</sub> - 1 = 0</p>
+                    </div>
+                    <div class="determined-function">
+                        <label class="determined-label">g(x) = </label>
+                        <p class="main-text"> x<sup>2</sup><sub>1</sub> + x<sup>2</sup><sub>2</sub></p>
+                    </div>
+                    <p class="main-text">Исходные данные:</p>
+                    <div class="initial-values">
+                        <div class="input-data initial-value">
+                            <input type="text" class="init" id="x01" required value="0.5" />
+                            <div class="underline"></div>
+                            <label class="main-text">x<sup>0</sup><sub>1</sub> = </label>
+                        </div>
+                        <div class="input-data initial-value">
+                            <input type="text" class="init" id="x02" required value="1" />
+                            <div class="underline"></div>
+                            <label class="main-text">x<sup>0</sup><sub>2</sub> = </label>
+                        </div>
+                        <div class="input-data initial-value">
+                            <input type="text" class="init" id="e" required value="0.01" />
+                            <div class="underline"></div>
+                            <label class="main-text">ε<sub></sub> = </label>
+                        </div>
+                        <div class="input-data initial-value">
+                            <input type="text" class="init" id="K" required value="k" />
+                            <div class="underline"></div>
+                            <label class="main-text">K = </label>
+                        </div>
+                        <div class="input-data initial-value">
+                            <input type="text" class="init" id="r0" required value="1" />
+                            <div class="underline"></div>
+                            <label class="main-text">r<sub>0</sub> = </label>
+                        </div>
+                    </div>
+                    <p class="main-text">Количество знаков после запятой:</p>
+                    <div class="num-range">
+                        <p class="main-text" id="res-range-4">5</p>
+                        <div>
+                            <input type="range" id="range-4" min="1" max="17" step="1" value="5">
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="button appearance-animation solve-button">
+        Рассчитать
+      </button>
+                </div>
+            </div>
+            <div class="solution-box">
+                <div class="box-content solution-content">
+                    <h3 class="main-text answer"></h3>
+                    <details class="more">
+                        <summary class="main-text more">Подробнее</summary>
+                        <table class="third-table">
+                            <tbody class="main-text solution">
+                            </tbody>
+                        </table>
+                    </details>
+                </div>
+            </div>
         </div>
     </main>
 </body>

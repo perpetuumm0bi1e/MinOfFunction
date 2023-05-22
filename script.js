@@ -360,6 +360,51 @@ solveButtons[3].addEventListener('click', function() {
     }
 });
 
+solveButtons[4].addEventListener('click', function() {
+    solution[4].innerHTML = '';
+    answer[4].innerHTML = '';
+
+    let x01 = initials[24].value,
+        x02 = initials[25].value,
+        E = initials[26].value,
+        K = initials[28].value,
+        r0 = initials[29].value,
+        arr = functionInput.value.split(''),
+        func = parseFunction(arr),
+        gradient = grad(func),
+        solution = false,
+        k = 0,
+        x = [],
+        range = range4.value;
+    x[k] = [x01, x02];
+
+    if (normValue([x[k + 1][0] - x[k][0], x[k + 1][1] - x[k][1]]) < E && Math.abs(funcValue(func, x[k + 1]) - funcValue(func, x[k])) < E) {
+        solutionBoxes[4].style.visibility = 'visible';
+        answers[4].innerHTML += `<br><b>Решение:</b> { x* = ( ${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)}); f(x*) = ${funcValue(func, x[k]).toFixed(range)} } <br>`;
+        solutions[4].innerHTML += `<tr><td>-</td> 
+                                    <td>${k + 1}</td>
+                                    <td>(${Number(x[k][0]).toFixed(range)}; ${Number(x[k][1]).toFixed(range)})<sup>T</sup></td>
+                                    <td>${funcValue(func, x[k + 1]).toFixed(range)}</td>
+                                    <td>(${gradValue(gradient, x[k + 1])[0].toFixed(range)}; ${gradValue(gradient, x[k + 1])[1].toFixed(range)})<sup>T</sup></td>
+                                    <td>${normValue(gradValue(gradient, x[k + 1])).toFixed(range)}</td>
+                                    <td>${detHesseMatrix(H, x[k])}</td>
+                                    <td>${detInverseHesseMatrix(H, x[k]).toFixed(range)}</td>
+                                    <td>(${d[0].toFixed(range)}; ${d[1].toFixed(range)})<sup>T</sup></td>
+                                    <td>${t.toFixed(range)}</td><td>-</td><td>-</td></tr>`;
+        solution = true;
+        break;
+    } else {
+        k++;
+        interation++;
+        break;
+    }
+
+});
+
+let pfunccalc = function() {
+
+}
+
 // Разбитие входной функции на массив с объектами (слагаемыми)
 let parseFunction = function(arr) {
     let numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
